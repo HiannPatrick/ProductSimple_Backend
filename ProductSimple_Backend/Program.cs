@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 
 using ProductSimple_Backend.Application;
 using ProductSimple_Backend.Application.Handlers;
+using ProductSimple_Backend.Application.Handlers.Auth;
 using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Infrastructure;
 using ProductSimple_Backend.Services.Authorization;
@@ -17,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 
 //MediatR
 //Product
@@ -38,7 +40,8 @@ builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<Creat
 builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<DeleteUserHandler>() );
 builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<UpdateUserHandler>() );
 builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<GetAllUsersHandler>() );
-
+//Login
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<LoginHandler>() );
 
 // database
 string connectionString = builder.Configuration.GetConnectionString( "DefaultConnection" ) ?? "";
@@ -65,7 +68,7 @@ builder.Services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
 builder.Services.AddAuthorization( options =>
 {
 	options.AddPolicy( "PermissionPolicy", policy =>
-		policy.Requirements.Add( new AuthorizePermissionAttribute( "" ) ) );
+		policy.Requirements.Add( new AuthorizePermissionAttribute( "GetUser" ) ) );
 } );
 
 // Swagger

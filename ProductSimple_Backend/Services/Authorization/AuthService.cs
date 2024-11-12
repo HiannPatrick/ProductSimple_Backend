@@ -1,5 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+
 using ProductSimple_Backend.Domain;
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -37,8 +39,7 @@ namespace ProductSimple_Backend.Services.Authorization
 
 		public bool VerifyPassword( string enteredPassword, string storedHash )
 		{
-			// Verificar a senha com um algoritmo de hashing seguro
-			return true;
+			return BCrypt.Net.BCrypt.Verify( enteredPassword, storedHash );
 		}
 	}
 }

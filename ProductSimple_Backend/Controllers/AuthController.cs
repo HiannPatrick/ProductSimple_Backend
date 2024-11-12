@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+
+using ProductSimple_Backend.Application;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,10 +16,12 @@ namespace ProductSimple_Backend.Controllers
 	public class AuthController :ControllerBase
 	{
 		private readonly string _secretKey;
+		private readonly IMediator _mediator;
 
-		public AuthController( IConfiguration configuration )
+		public AuthController( IConfiguration configuration, IMediator mediator )
 		{
 			_secretKey = configuration[ "Jwt:SecretKey" ] ?? "";
+			_mediator = mediator;
 		}
 
 		[HttpPost( "token" )]
@@ -43,6 +49,14 @@ namespace ProductSimple_Backend.Controllers
 			string tokenString = securityHandler.WriteToken(token);
 
 			return Ok( new { token = tokenString } );
+		}
+
+		[HttpPost("login")]
+		public async Task<IActionResult> Login( [FromBody] LoginCommand command )
+		{
+			var result = await _mediator.Send(command);
+
+			return result.Success ? Ok( new { Token = result.Message } ) : BadRequest( result );
 		}
 	}
 }
