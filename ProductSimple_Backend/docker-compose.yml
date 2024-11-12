@@ -1,0 +1,22 @@
+﻿version: '3.4'
+
+services:
+  productsimple-backend:
+    image: productsimple-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: productsimple
+    ports:
+      - "3306:3306"

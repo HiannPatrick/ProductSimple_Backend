@@ -1,0 +1,6 @@
+@ProductSimple_Backend_HostAddress = http://localhost:5276
+
+GET {{ProductSimple_Backend_HostAddress}}/Produtos
+Accept: application/json
+
+###
