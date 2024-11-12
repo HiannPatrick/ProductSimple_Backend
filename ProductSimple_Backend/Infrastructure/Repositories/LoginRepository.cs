@@ -1,19 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 using ProductSimple_Backend.Application;
 using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Domain;
-using ProductSimple_Backend.Services.Authorization;
+using ProductSimple_Backend.Services;
 
 namespace ProductSimple_Backend.Infrastructure
 {
-	public class LoginRepository : ILoginRepository
+    public class LoginRepository : ILoginRepository
 	{
 		private readonly ProductSimpleDbContext _context;
-		private readonly AuthService _authService;
+		private readonly IAuthService _authService;
 
-		public LoginRepository( ProductSimpleDbContext context, AuthService authService )
+		public LoginRepository( ProductSimpleDbContext context, IAuthService authService )
 		{
             _context = context;
 			_authService = authService;

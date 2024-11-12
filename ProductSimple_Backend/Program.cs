@@ -8,6 +8,7 @@ using ProductSimple_Backend.Application.Handlers;
 using ProductSimple_Backend.Application.Handlers.Auth;
 using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Infrastructure;
+using ProductSimple_Backend.Services;
 using ProductSimple_Backend.Services.Authorization;
 
 using System.Text;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 //MediatR
 //Product

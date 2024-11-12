@@ -6,10 +6,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace ProductSimple_Backend.Services.Authorization
+namespace ProductSimple_Backend.Services
 {
-	public class AuthService
-	{
+	public class AuthService :IAuthService
+    {
 		private readonly IConfiguration _configuration;
 
 		public AuthService( IConfiguration configuration )
