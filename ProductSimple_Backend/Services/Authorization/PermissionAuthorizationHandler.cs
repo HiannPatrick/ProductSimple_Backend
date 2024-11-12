@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Services.Authorization;

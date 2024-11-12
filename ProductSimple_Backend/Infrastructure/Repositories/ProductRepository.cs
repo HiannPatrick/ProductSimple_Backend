@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using ProductSimple_Backend.Application;
 using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Domain;
-
-using System.Xml.Linq;
+using ProductSimple_Backend.Domain.Dto;
 
 namespace ProductSimple_Backend.Infrastructure
 {
@@ -51,7 +49,7 @@ namespace ProductSimple_Backend.Infrastructure
 			return await _context.Produtos.FindAsync( id );
 		}
 
-		public async Task<PaginatedResult<Produto>> GetAllProducts( int pageNumber, int pageSize )
+		public async Task<PaginatedResultDto<Produto>> GetAllProducts( int pageNumber, int pageSize )
 		{
 			int total = _context.Produtos.Count();
 
@@ -60,12 +58,12 @@ namespace ProductSimple_Backend.Infrastructure
 								        .Take( pageSize )
 								        .ToListAsync();
 
-			var paginatedResult = new PaginatedResult<Produto>( produtos, total, pageNumber, pageSize );
+			var paginatedResult = new PaginatedResultDto<Produto>( produtos, total, pageNumber, pageSize );
 
 			return paginatedResult;
 		}
 
-		public async Task<PaginatedResult<Produto>> GetProductsByName( string name, int pageNumber, int pageSize )
+		public async Task<PaginatedResultDto<Produto>> GetProductsByName( string name, int pageNumber, int pageSize )
 		{
 			var produtos = _context.Produtos.Where( o => o.Nome.Equals( name ) );
 
@@ -75,12 +73,12 @@ namespace ProductSimple_Backend.Infrastructure
 								                  .Take( pageSize )
 								                  .ToListAsync();
 
-			var paginatedResult = new PaginatedResult<Produto>( produtosPaginated, total, pageNumber, pageSize );
+			var paginatedResult = new PaginatedResultDto<Produto>( produtosPaginated, total, pageNumber, pageSize );
 
 			return paginatedResult;
 		}
 
-		public async Task<PaginatedResult<Produto>> GetProductsByDescription( string description, int pageNumber, int pageSize )
+		public async Task<PaginatedResultDto<Produto>> GetProductsByDescription( string description, int pageNumber, int pageSize )
 		{
 			var produtos = _context.Produtos.Where( o => o.Descricao.Equals( description ) );
 
@@ -90,7 +88,7 @@ namespace ProductSimple_Backend.Infrastructure
 												  .Take( pageSize )
 												  .ToListAsync();
 
-			var paginatedResult = new PaginatedResult<Produto>( produtosPaginated, total, pageNumber, pageSize );
+			var paginatedResult = new PaginatedResultDto<Produto>( produtosPaginated, total, pageNumber, pageSize );
 
 			return paginatedResult;
 		}

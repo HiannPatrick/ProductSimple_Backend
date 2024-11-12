@@ -10,7 +10,7 @@ namespace ProductSimple_Backend.Data
 
 		public DbSet<Produto> Produtos { get; set; }
 		public DbSet<Categoria> Categorias { get; set; }
-
+		public DbSet<User> Users { get; set; }
 		public ProductSimpleDbContext()
         {
             

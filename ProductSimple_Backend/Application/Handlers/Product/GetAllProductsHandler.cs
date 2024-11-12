@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using ProductSimple_Backend.Domain;
+using ProductSimple_Backend.Domain.Dto;
 using ProductSimple_Backend.Infrastructure;
 
 namespace ProductSimple_Backend.Application.Handlers
 {
-	public class GetAllProductsHandler :IRequestHandler<GetAllProductsQuery, PaginatedResult<Produto>>
+    public class GetAllProductsHandler :IRequestHandler<GetAllProductsQuery, PaginatedResultDto<Produto>>
 	{
 		private readonly IProductRepository _productRepository;
 
@@ -13,7 +14,7 @@ namespace ProductSimple_Backend.Application.Handlers
 			_productRepository = productRepository;
 		}
 
-		public async Task<PaginatedResult<Produto>> Handle( GetAllProductsQuery request, CancellationToken cancellationToken )
+		public async Task<PaginatedResultDto<Produto>> Handle( GetAllProductsQuery request, CancellationToken cancellationToken )
 		{
 			try
 			{
@@ -23,7 +24,7 @@ namespace ProductSimple_Backend.Application.Handlers
 			}
 			catch( Exception )
 			{
-				return new PaginatedResult<Produto>( new List<Produto>(), 0, request.PageNumber, request.PageSize );
+				return new PaginatedResultDto<Produto>( new List<Produto>(), 0, request.PageNumber, request.PageSize );
 			}
 		}
 	}
