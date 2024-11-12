@@ -1,22 +1,35 @@
-﻿version: '3.4'
+﻿version: '3.8'
 
 services:
   productsimple-backend:
     image: productsimple-backend:latest
+    container_name: irede_backend
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8000:8000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=productsimple;User=root;Password=root;
     depends_on:
       - db
+    networks:
+       - network_backend
 
   db:
     image: mysql:8.0
+    container_name: irede-db
     environment:
+      
+      MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: productsimple
     ports:
       - "3306:3306"
+    networks:
+        - network_backend
+networks:
+  network_backend:
+    name: network_backend_irede
+    driver: bridge
