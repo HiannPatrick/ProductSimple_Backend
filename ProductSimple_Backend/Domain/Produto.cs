@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace ProductSimple_Backend.Models
+namespace ProductSimple_Backend.Domain
 {
 	public class Produto
 	{

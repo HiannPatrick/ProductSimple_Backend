@@ -21,18 +21,18 @@ namespace ProductSimple_Backend.Services
 
 			var permissionName = requirement.Permission;
 
-			var userRoles = await _dbContext.UserRoles
-			                                .Where(ur => ur.UserId == userId)
-			                                .Include(ur => ur.Role)
-			                                .ThenInclude(r => r.RolePermissions)
-			                                .ThenInclude(rp => rp.Permission)
-			                                .ToListAsync();
+			//var userRoles = await _dbContext.UserRoles
+			//                                .Where(ur => ur.UserId == userId)
+			//                                .Include(ur => ur.Role)
+			//                                .ThenInclude(r => r.RolePermissions)
+			//                                .ThenInclude(rp => rp.Permission)
+			//                                .ToListAsync();
 
-			var permissions = userRoles.SelectMany(ur => ur.Role.RolePermissions)
-									   .Select(rp => rp.Permission.Name);
+			//var permissions = userRoles.SelectMany(ur => ur.Role.RolePermissions)
+			//						   .Select(rp => rp.Permission.Name);
 
-			if( permissions.Contains( permissionName ) )
-				context.Succeed( requirement );
+			//if( permissions.Contains( permissionName ) )
+			//	context.Succeed( requirement );
 
 			context.Fail();
 		}

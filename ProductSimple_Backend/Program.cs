@@ -1,14 +1,37 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+using ProductSimple_Backend.Application;
+using ProductSimple_Backend.Application.Handlers;
 using ProductSimple_Backend.Data;
+using ProductSimple_Backend.Infrastructure;
 using ProductSimple_Backend.Services.Authorization;
 
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Scoped
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+//MediatR
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<CreateProductHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<DeleteProductHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<UpdateProductHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<GetAllProductsHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<GetProductByIdHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<GetProductByNameHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<GetProductByDescriptionHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<CreateCategoryHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<DeleteCategoryHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<UpdateCategoryHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<GetAllCategoriesHandler>() );
+builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<GetCategoryByIdHandler>() );
 
 // database
 string connectionString = builder.Configuration.GetConnectionString( "DefaultConnection" ) ?? "";
