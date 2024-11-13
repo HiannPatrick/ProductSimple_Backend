@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProductSimple_Backend.Services.Authorization
+namespace ProductSimple_Backend.Services
 {
 	public class AuthorizePermissionAttribute :AuthorizeAttribute, IAuthorizationFilter, IAuthorizationRequirement
 	{

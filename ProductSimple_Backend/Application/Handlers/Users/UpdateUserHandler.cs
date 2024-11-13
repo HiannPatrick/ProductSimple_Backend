@@ -24,7 +24,7 @@ namespace ProductSimple_Backend.Application
 					Id = request.Id,
 					Email = request.Email,
 					PasswordHash = request.PasswordHash,
-					Permissions = request.Permissions
+					Roles = request.Roles
 				};
 
 				var validation = _userValidator.Validate( user );

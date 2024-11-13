@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
-using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Domain;
+using ProductSimple_Backend.Migrations;
 
 namespace ProductSimple_Backend.Infrastructure
 {
-	public class UserRepository :IUserRepository
+    public class UserRepository :IUserRepository
 	{
-		private readonly ProductSimpleDbContext _context;
+		private readonly DataContext _context;
 
-		public UserRepository( ProductSimpleDbContext context )
+		public UserRepository( DataContext context )
         {
 			_context = context;
         }

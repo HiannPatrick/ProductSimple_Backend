@@ -1,16 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
-using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Domain;
 using ProductSimple_Backend.Domain.Dto;
+using ProductSimple_Backend.Migrations;
 
 namespace ProductSimple_Backend.Infrastructure
 {
-	public class ProductRepository : IProductRepository
+    public class ProductRepository : IProductRepository
 	{
-		private readonly ProductSimpleDbContext _context;
+		private readonly DataContext _context;
 
-		public ProductRepository( ProductSimpleDbContext context )
+		public ProductRepository( DataContext context )
 		{
 			_context = context;
 		}

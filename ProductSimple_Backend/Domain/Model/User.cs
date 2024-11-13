@@ -13,7 +13,6 @@ namespace ProductSimple_Backend.Domain
 		[Required]
 		public string PasswordHash { get; set; }
 
-		[Required]
-		public List<string> Permissions { get; set; } = new List<string>();
+		public List<Role> Roles { get; set; }
 	}
 }

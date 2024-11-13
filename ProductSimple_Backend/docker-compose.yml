@@ -1,6 +1,4 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   productsimple-backend:
     image: productsimple-backend:latest
     container_name: irede_backend
@@ -8,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=db;Database=productsimple;User=root;Password=root;

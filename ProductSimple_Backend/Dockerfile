@@ -1,7 +1,7 @@
 ﻿# Usa a imagem base do ASP.NET Core Runtime para a execução
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 8000
+EXPOSE 8080
 
 # Usa o SDK do .NET para a fase de build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build

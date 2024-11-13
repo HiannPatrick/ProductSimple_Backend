@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ProductSimple_Backend.Application;
-using ProductSimple_Backend.Services.Authorization;
+using ProductSimple_Backend.Services;
 
 namespace ProductSimple_Backend.Controllers
 {

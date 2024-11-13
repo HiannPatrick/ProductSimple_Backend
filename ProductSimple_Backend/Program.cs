@@ -6,10 +6,9 @@ using Microsoft.OpenApi.Models;
 using ProductSimple_Backend.Application;
 using ProductSimple_Backend.Application.Handlers;
 using ProductSimple_Backend.Application.Handlers.Auth;
-using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Infrastructure;
+using ProductSimple_Backend.Migrations;
 using ProductSimple_Backend.Services;
-using ProductSimple_Backend.Services.Authorization;
 
 using System.Text;
 
@@ -21,6 +20,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+//builder.Services.AddScoped<IDbInitializerService, DbInitializerService>();
 
 //MediatR
 //Product
@@ -48,7 +48,7 @@ builder.Services.AddMediatR( o => o.RegisterServicesFromAssemblyContaining<Login
 // database
 string connectionString = builder.Configuration.GetConnectionString( "DefaultConnection" ) ?? "";
 
-builder.Services.AddDbContext<ProductSimpleDbContext>( o => o.UseMySQL( connectionString ) );
+builder.Services.AddDbContext<DataContext>( o => o.UseMySQL( connectionString ) );
 
 //Authentication
 string? secretKey = builder.Configuration["Jwt:SecretKey"];
@@ -112,18 +112,32 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
+app.UseSwagger();
+
 // Configuração do pipeline
 if( app.Environment.IsDevelopment() )
 {
 	app.UseDeveloperExceptionPage();
-	app.UseSwagger();  
-	app.UseSwaggerUI(); 
+	app.UseSwaggerUI();
 }
-
+else
+{
+	app.UseSwaggerUI( o =>
+	{
+		o.SwaggerEndpoint( "/swagger/v1/swagger.json", "ProductSimple_Backend API V1" );
+		o.RoutePrefix = string.Empty;
+		o.DisplayRequestDuration();
+	} );
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
+
+using( var serviceScope = app.Services.CreateScope() )
+{
+	new DbInitializerService( serviceScope );
+}
 
 app.Run();

@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
-using ProductSimple_Backend.Data;
 using ProductSimple_Backend.Domain;
+using ProductSimple_Backend.Migrations;
 
 namespace ProductSimple_Backend.Infrastructure
 {
-	public class CategoryRepository :ICategoryRepository
+    public class CategoryRepository :ICategoryRepository
 	{
-		private readonly ProductSimpleDbContext _context;
+		private readonly DataContext _context;
 
-		public CategoryRepository( ProductSimpleDbContext context )
+		public CategoryRepository( DataContext context )
         {
 			_context = context;
         }
