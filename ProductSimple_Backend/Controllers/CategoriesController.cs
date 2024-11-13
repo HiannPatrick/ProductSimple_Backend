@@ -22,7 +22,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpGet( "all" )]
-		[AuthorizePermission( "GetCategory" )]
+		[Authorize( Policy = "GetCategory" )]
 		public async Task<IActionResult> GetAll(  )
 		{
 			var query = new GetAllCategoriesQuery();
@@ -36,7 +36,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpGet( "{id}" )]
-		[AuthorizePermission( "GetCategory" )]
+		[Authorize( Policy = "GetCategory" )]
 		public async Task<IActionResult> Get( int id )
 		{
 			var query = new GetCategoryByIdQuery( id );
@@ -50,7 +50,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpPost]
-		[AuthorizePermission( "CreateCategory" )]
+		[Authorize( Policy = "CreateCategory" )]
 		public async Task<IActionResult> Create( [FromBody] CreateCategoryCommand command )
 		{
 			var result = await _mediator.Send(command);
@@ -59,7 +59,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpPut( "{id}" )]
-		[AuthorizePermission( "EditCategory" )]
+		[Authorize( Policy = "EditCategory" )]
 		public async Task<IActionResult> Edit( [FromBody] UpdateCategoryCommand command )
 		{
 			var result = await _mediator.Send(command);
@@ -68,7 +68,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpDelete( "{id}" )]
-		[AuthorizePermission( "DeleteCategory" )]
+		[Authorize( Policy = "DeleteCategory" )]
 		public async Task<IActionResult> Delete( int id )
 		{
 			var command = new DeleteCategoryCommand(id);

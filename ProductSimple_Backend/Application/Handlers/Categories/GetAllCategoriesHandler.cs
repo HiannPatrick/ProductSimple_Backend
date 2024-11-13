@@ -4,7 +4,7 @@ using ProductSimple_Backend.Infrastructure;
 
 namespace ProductSimple_Backend.Application
 { 
-	public class GetAllCategoriesHandler :IRequestHandler<GetAllCategoriesQuery, List<Categoria>>
+	public class GetAllCategoriesHandler :IRequestHandler<GetAllCategoriesQuery, List<CategoriaDto>>
 	{
 		private readonly ICategoryRepository _categoryRepository;
 
@@ -13,17 +13,24 @@ namespace ProductSimple_Backend.Application
 			_categoryRepository = categoryRepository;
 		}
 
-		public async Task<List<Categoria>> Handle( GetAllCategoriesQuery request, CancellationToken cancellationToken )
+		public async Task<List<CategoriaDto>> Handle( GetAllCategoriesQuery request, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var listProduct = await _categoryRepository.GetAllCategories();
+				var listCategory = await _categoryRepository.GetAllCategories();
 
-				return listProduct;
+				var listCategoryDto = new List<CategoriaDto>();
+
+				foreach ( var category in listCategory )
+				{
+					listCategoryDto.Add(new CategoriaDto(category));
+				}
+
+				return listCategoryDto;
 			}
 			catch( Exception )
 			{
-				return new List<Categoria>();
+				return new List<CategoriaDto>();
 			}
 		}
 	}

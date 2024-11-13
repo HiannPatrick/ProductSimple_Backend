@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -9,7 +10,9 @@ using ProductSimple_Backend.Application.Handlers.Auth;
 using ProductSimple_Backend.Infrastructure;
 using ProductSimple_Backend.Migrations;
 using ProductSimple_Backend.Services;
+using ProductSimple_Backend.Services.Authorization;
 
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +23,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-//builder.Services.AddScoped<IDbInitializerService, DbInitializerService>();
+builder.Services.AddScoped<IAuthorizationHandler, RolesService>();
 
 //MediatR
 //Product
@@ -65,12 +68,36 @@ builder.Services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
 			ValidAudience = builder.Configuration[ "Jwt:Audience" ],
 			IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes( secretKey ) )
 		};
+		options.Events = new JwtBearerEvents
+		{
+			OnTokenValidated = context =>
+			{
+				var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+
+				if( claimsIdentity != null )
+				{
+					var emailClaim = claimsIdentity.FindFirst(ClaimTypes.Email);
+
+					if( emailClaim == null )
+					{
+						claimsIdentity.AddClaim( new Claim( ClaimTypes.Email, "teste@teste.com" ) );
+					}
+				}
+
+				return Task.CompletedTask;
+			}
+		};
 	} );
+
+var rolesList = DbInitializerService.GetAllRoles();
 
 builder.Services.AddAuthorization( options =>
 {
-	options.AddPolicy( "PermissionPolicy", policy =>
-		policy.Requirements.Add( new AuthorizePermissionAttribute( "GetUser" ) ) );
+	foreach( var role in rolesList )
+	{
+		options.AddPolicy( role, policy =>
+			policy.Requirements.Add( new RoleRequirement( role ) ) );
+	}
 } );
 
 // Swagger
@@ -78,10 +105,10 @@ var openApiSecuritySchemeDefinition = new OpenApiSecurityScheme
 {
 	In = ParameterLocation.Header,
 	Description = "Authorização JWT. Digite o token.",
-	Name = "ApiKey",
-	Type = SecuritySchemeType.ApiKey,
+	Name = "Authorization",
+	Type = SecuritySchemeType.Http,
 	BearerFormat = "JWT",
-	Scheme = "bearer"
+	Scheme = "Bearer"
 };
 
 var openApiReference = new OpenApiReference

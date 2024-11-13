@@ -22,7 +22,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpGet( "name" )]
-		[AuthorizePermission( "GetProduct" )]
+		[Authorize( Policy = "GetProduct" )]
 		public async Task<IActionResult> GetProductsByName( string name, int pageNumber = 1, int pageSize = 10 )
 		{
 			var query = new GetProductsByNameQuery(name, pageNumber, pageSize);
@@ -36,7 +36,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpGet( "description" )]
-		[AuthorizePermission( "GetProduct" )]
+		[Authorize( Policy = "GetProduct" )]
 		public async Task<IActionResult> GetProductsByDescription( string description, int pageNumber = 1, int pageSize = 10 )
 		{
 			var query = new GetProductsByDescriptionQuery(description, pageNumber, pageSize);
@@ -50,7 +50,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpGet("all")]
-		[AuthorizePermission( "GetProduct" )]
+		[Authorize( Policy = "GetProduct" )]
 		public async Task<IActionResult> GetAll( int pageNumber = 1, int pageSize = 10 )
 		{
 			var query = new GetAllProductsQuery(pageNumber, pageSize);
@@ -64,7 +64,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpGet( "{id}" )]
-		[AuthorizePermission( "GetProduct" )]
+		[Authorize( Policy = "GetProduct" )]
 		public async Task<IActionResult> Get( int id )
 		{
 			var query = new GetProductByIdQuery( id );
@@ -78,7 +78,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpPost]
-		[AuthorizePermission( "CreateProduct" )]
+		[Authorize( Policy = "CreateProduct" )]
 		public async Task<IActionResult> Create( [FromBody] CreateProductCommand command )
 		{
 			var result = await _mediator.Send(command);
@@ -87,7 +87,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpPut( "{id}" )]
-		[AuthorizePermission( "EditProduct" )]
+		[Authorize( Policy = "EditProduct" )]
 		public async Task<IActionResult> Update( int id, [FromBody] UpdateProductCommand command )
 		{
 			if( id != command.Id )
@@ -99,7 +99,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpDelete( "{id}" )]
-		[AuthorizePermission( "DeleteProduct" )]
+		[Authorize( Policy = "DeleteProduct" )]
 		public async Task<IActionResult> Delete( int id )
 		{
 			var command = new DeleteProductCommand(id);

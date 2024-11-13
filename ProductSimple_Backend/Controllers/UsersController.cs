@@ -22,10 +22,10 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpGet( "all" )]
-		[AuthorizePermission( "GetUser" )]
+		[Authorize( Policy = "GetUser" )]
 		public async Task<IActionResult> GetAll(  )
 		{
-			var query = new GetAllCategoriesQuery();
+			var query = new GetAllUsersQuery();
 
 			var result = await _mediator.Send(query);
 
@@ -36,7 +36,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpPost]
-		[AuthorizePermission( "CreateUser" )]
+		[Authorize( Policy = "CreateUser" )]
 		public async Task<IActionResult> Create( [FromBody] CreateUserCommand command )
 		{
 			var result = await _mediator.Send(command);
@@ -45,7 +45,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpPut( "{id}" )]
-		[AuthorizePermission( "EditUser" )]
+		[Authorize( Policy = "EditUser" )]
 		public async Task<IActionResult> Edit( [FromBody] UpdateUserCommand command )
 		{
 			var result = await _mediator.Send(command);
@@ -54,7 +54,7 @@ namespace ProductSimple_Backend.Controllers
 		}
 
 		[HttpDelete( "{id}" )]
-		[AuthorizePermission( "DeleteUser" )]
+		[Authorize( Policy = "DeleteUser" )]
 		public async Task<IActionResult> Delete( int id )
 		{
 			var command = new DeleteUserCommand(id);

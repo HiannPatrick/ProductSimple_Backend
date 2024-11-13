@@ -4,7 +4,7 @@ using ProductSimple_Backend.Infrastructure;
 
 namespace ProductSimple_Backend.Application
 { 
-	public class GetAllUsersHandler :IRequestHandler<GetAllUsersQuery, List<User>>
+	public class GetAllUsersHandler :IRequestHandler<GetAllUsersQuery, List<UserDto>>
 	{
 		private readonly IUserRepository _userRepository;
 
@@ -13,17 +13,24 @@ namespace ProductSimple_Backend.Application
 			_userRepository = userRepository;
 		}
 
-		public async Task<List<User>> Handle( GetAllUsersQuery request, CancellationToken cancellationToken )
+		public async Task<List<UserDto>> Handle( GetAllUsersQuery request, CancellationToken cancellationToken )
 		{
 			try
 			{
 				var listUsers = await _userRepository.GetAllUsers();
 
-				return listUsers;
+				var listUsersDto = new List<UserDto>();
+
+				foreach ( var user in listUsers )
+				{
+					listUsersDto.Add( new UserDto( user ) );
+				}
+
+				return listUsersDto;
 			}
 			catch( Exception )
 			{
-				return new List<User>();
+				return new List<UserDto>();
 			}
 		}
 	}

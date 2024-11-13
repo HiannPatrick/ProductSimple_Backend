@@ -5,7 +5,7 @@ using ProductSimple_Backend.Infrastructure;
 
 namespace ProductSimple_Backend.Application
 {
-	public class GetCategoryByIdHandler :IRequestHandler<GetCategoryByIdQuery, Categoria>
+	public class GetCategoryByIdHandler :IRequestHandler<GetCategoryByIdQuery, CategoriaDto>
 	{
 		private readonly ICategoryRepository _categoryRepository;
 
@@ -14,13 +14,16 @@ namespace ProductSimple_Backend.Application
 			_categoryRepository = categoryRepository;
 		}
 
-		public async Task<Categoria?> Handle( GetCategoryByIdQuery request, CancellationToken cancellationToken )
+		public async Task<CategoriaDto?> Handle( GetCategoryByIdQuery request, CancellationToken cancellationToken )
 		{
 			try
 			{
 				var category = await _categoryRepository.GetCategoryById(request.Id);
 
-				return category;
+				if(category is null)
+					return null;
+
+				return  new CategoriaDto(category);
 			}
 			catch( Exception )
 			{

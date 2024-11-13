@@ -5,7 +5,7 @@ using ProductSimple_Backend.Infrastructure;
 
 namespace ProductSimple_Backend.Application.Handlers
 {
-	public class GetProductByIdHandler :IRequestHandler<GetProductByIdQuery, Produto>
+	public class GetProductByIdHandler :IRequestHandler<GetProductByIdQuery, ProdutoDto>
 	{
 		private readonly IProductRepository _productRepository;
 
@@ -14,13 +14,13 @@ namespace ProductSimple_Backend.Application.Handlers
 			_productRepository = productRepository;
 		}
 
-		public async Task<Produto?> Handle( GetProductByIdQuery request, CancellationToken cancellationToken )
+		public async Task<ProdutoDto?> Handle( GetProductByIdQuery request, CancellationToken cancellationToken )
 		{
 			try
 			{
 				var product = await _productRepository.GetProductById(request.Id);
 
-				return product;
+				return  product is null ? null : new ProdutoDto( product );
 			}
 			catch( Exception )
 			{

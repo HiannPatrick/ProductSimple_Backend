@@ -8,14 +8,12 @@ namespace ProductSimple_Backend.Services
     public class DbInitializerService : IDbInitializerService
     {
 		private readonly IServiceScope _serviceScope;
-
 		public DbInitializerService( IServiceScope serviceScope )
 		{
 			_serviceScope = serviceScope;
 
 			this.Migrate();
 		}
-
 		public void Migrate()
 		{
 			using( var context = _serviceScope.ServiceProvider.GetService<DataContext>() )
@@ -74,38 +72,49 @@ namespace ProductSimple_Backend.Services
 				}
 			}
 		}
-
 		private List<Role> getAdminRoles()
 		{
-			var list = new List<Role>
+			var rolesList = GetAllRoles();
+
+			var list = new List<Role>();
+
+			foreach( string sRole in rolesList )
 			{
-				new Role { Name = "GetProduct" },
-				new Role { Name = "CreateProduct" },
-				new Role { Name = "EditProduct" },
-				new Role { Name = "DeleteProduct" },
-				new Role { Name = "GetCategory" },
-				new Role { Name = "CreateCategory" },
-				new Role { Name = "EditCategory" },
-				new Role { Name = "DeleteCategory" },
-				new Role { Name = "GetUser" },
-				new Role { Name = "CreateUser" },
-				new Role { Name = "EditUser" },
-				new Role { Name = "DeleteUser" }
-			};
+				list.Add( new Role { Name = sRole } );
+			}
 
 			return list;
 		}
-
 		private List<Role> getUserRoles()
 		{
-			var list = new List<Role>
+			var rolesList = GetAllRoles().Where( o => o.StartsWith("Get" ) ).ToList();
+
+			var list = new List<Role>();
+
+			foreach( string sRole in rolesList )
 			{
-				new Role { Name = "GetProduct" },
-				new Role { Name = "GetCategory" },
-				new Role { Name = "GetUser" }
-			};
+				list.Add( new Role { Name = sRole } );
+			}
 
 			return list;
+		}
+		public static List<string> GetAllRoles()
+		{
+			return new List<string>
+	        {
+	        	"GetProduct",
+	        	"CreateProduct",
+	        	"EditProduct",
+	        	"DeleteProduct",
+	        	"GetCategory",
+	        	"CreateCategory",
+	        	"EditCategory",
+	        	"DeleteCategory",
+	        	"GetUser",
+	        	"CreateUser",
+	        	"EditUser",
+	        	"DeleteUser"
+	        };
 		}
 	}
 }

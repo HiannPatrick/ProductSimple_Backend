@@ -19,7 +19,7 @@ namespace ProductSimple_Backend.Services
 
 		public string GenerateJwtToken( User user )
 		{
-			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Issuer"]));
+			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
 			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 			var claims = user.Roles.Select(permission => new Claim("permission", permission.Name)).ToList();
