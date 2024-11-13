@@ -79,7 +79,7 @@ namespace ProductSimple_Backend.Controllers
 
 		[HttpPost]
 		[Authorize( Policy = "CreateProduct" )]
-		public async Task<IActionResult> Create( [FromBody] CreateProductCommand command )
+		public async Task<IActionResult> Create( [FromForm] CreateProductCommand command )
 		{
 			var result = await _mediator.Send(command);
 
@@ -88,7 +88,7 @@ namespace ProductSimple_Backend.Controllers
 
 		[HttpPut( "{id}" )]
 		[Authorize( Policy = "EditProduct" )]
-		public async Task<IActionResult> Update( int id, [FromBody] UpdateProductCommand command )
+		public async Task<IActionResult> Update( int id, [FromForm] UpdateProductCommand command )
 		{
 			if( id != command.Id )
 				return BadRequest( ReturnCommon.FailureMessage( "ID do produto inválido." ) );

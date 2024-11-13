@@ -137,6 +137,17 @@ builder.Services.AddSwaggerGen( o =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+//Cria diretório para imagens
+var customPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+
+// Garante que a pasta exista
+if( !Directory.Exists( customPath ) )
+{
+	Directory.CreateDirectory( customPath );
+}
+
+builder.Environment.WebRootPath = customPath;
+
 var app = builder.Build();
 
 app.UseSwagger();
